@@ -16,6 +16,11 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    phoneNo:{
+      type:Number,
+      required:true,
+      trim: true
+    },
     email: {
       type: String,
       required: true,
@@ -28,12 +33,6 @@ const userSchema = mongoose.Schema(
         }
       },
     },
-    phoneNo:{
-       type:Number,
-       required:true,
-       trim: true
-    
-     },
     password: {
       type: String,
       required: true,
@@ -44,7 +43,16 @@ const userSchema = mongoose.Schema(
           throw new Error('Password must contain at least one letter and one number');
         }
       },
-      // private: true, // used by the toJSON plugin
+      private: true, // used by the toJSON plugin
+    },
+    role: {
+      type: String,
+      enum: roles,
+      default: 'user',
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -59,11 +67,11 @@ userSchema.plugin(paginate);
 /**
  * Check if email is taken
  * @param {string} email - The user's email
- * @param {ObjectId} [excludeid] - The id of the user to be excluded
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isEmailTaken = async function (email, excludeid) {
-  const user = await this.findOne({ email, _id: { $ne: excludeid } });
+userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
+  const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
   return !!user;
 };
 

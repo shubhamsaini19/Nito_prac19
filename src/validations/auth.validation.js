@@ -3,11 +3,12 @@ const { password } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().custom(password),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    email: Joi.string().required().email(),
     phoneNo: Joi.number().required(),
-    password: Joi.string().required().custom(password),
+    role: Joi.string().required().valid('user', 'admin'),
   }),
 };
 
@@ -30,33 +31,33 @@ const refreshTokens = {
   }),
 };
 
-// const forgotPassword = {
-//   body: Joi.object().keys({
-//     email: Joi.string().email().required(),
-//   }),
-// };
+const forgotPassword = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+  }),
+};
 
-// const resetPassword = {
-//   query: Joi.object().keys({
-//     token: Joi.string().required(),
-//   }),
-//   body: Joi.object().keys({
-//     password: Joi.string().required().custom(password),
-//   }),
-// };
+const resetPassword = {
+  query: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    password: Joi.string().required().custom(password),
+  }),
+};
 
-// const verifyEmail = {
-//   query: Joi.object().keys({
-//     token: Joi.string().required(),
-//   }),
-// };
+const verifyEmail = {
+  query: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+};
 
 module.exports = {
   register,
   login,
   logout,
   refreshTokens,
-  // forgotPassword,
-  // resetPassword,
-  // verifyEmail,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
 };

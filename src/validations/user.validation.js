@@ -3,41 +3,40 @@ const { password, objectId } = require('./custom.validation');
 
 const createUser = {
   body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().custom(password),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    email: Joi.string().required().email(),
     phoneNo: Joi.number().required(),
-    password: Joi.string().required().custom(password),
+    role: Joi.string().required().valid('user', 'admin'),
   }),
 };
 
-const getAllUser = {
+const getUsers = {
   query: Joi.object().keys({
-    firstName: Joi.string(),
-    lastName: Joi.string(),
-    email: Joi.string(),
-    phoneNo: Joi.number().integer(),
-    password: Joi.string(),
+    name: Joi.string(),
+    role: Joi.string(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
 
 const getUser = {
   params: Joi.object().keys({
-    id: Joi.string().custom(objectId),
+    userId: Joi.string().custom(objectId),
   }),
 };
 
 const updateUser = {
   params: Joi.object().keys({
-    id: Joi.required().custom(objectId),
+    userId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
-      firstName: Joi.string(),
-      lastName: Joi.string(),
       email: Joi.string().email(),
-      phoneNo: Joi.number().integer(),
       password: Joi.string().custom(password),
+      name: Joi.string(),
     })
     .min(1),
 };
@@ -50,7 +49,7 @@ const deleteUser = {
 
 module.exports = {
   createUser,
-  getAllUser,
+  getUsers,
   getUser,
   updateUser,
   deleteUser,

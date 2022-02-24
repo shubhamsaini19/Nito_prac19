@@ -8,12 +8,12 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(userValidation.createUser), userController.createUser)
-  .get(auth(), validate(userValidation.getAllUser), userController.getAllUser);
+  .post(validate(userValidation.createUser), userController.createUser)
+  .get( validate(userValidation.getUsers), userController.getUsers);
 
 router
-  .route('/:id')
-  .get(auth(), validate(userValidation.getUser), userController.getUser)
+  .route('/:userId')
+  .get(validate(userValidation.getUser), userController.getUser)
   .patch(auth(), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth(), validate(userValidation.deleteUser), userController.deleteUser);
 
